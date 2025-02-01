@@ -41,5 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # db data migration
-*/lib/db/data
+*/lib/db/migrations/*
 
