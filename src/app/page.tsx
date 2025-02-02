@@ -8,6 +8,8 @@ const Page = async () => {
 
   if(!session) redirect("/sign-in");
 
+  console.log(session)
+
   return (
     <>
       <div className="bg-gray-100 rounded-lg p-4 text-center mb-6">
