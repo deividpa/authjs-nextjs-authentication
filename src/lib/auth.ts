@@ -11,26 +11,28 @@ const adapter = PrismaAdapter(prisma)
  
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter,
-  providers: [GitHub, Credentials({
-    credentials: {
-      email: { type: "email" },
-      password: { type: "password" },
-    },
-    authorize: async (credentials) => {
+  providers: [
+    GitHub, 
+    Credentials({
+      credentials: {
+        email: { type: "email" },
+        password: { type: "password" },
+      },
+      authorize: async (credentials) => {
 
-      const validatedCredentials = await userSchema.parse(credentials)
+        const validatedCredentials = await userSchema.parse(credentials)
 
-      const user = await prisma.user.findFirst({
-        where: { email: validatedCredentials.email, password: validatedCredentials.password },
-      })
+        const user = await prisma.user.findFirst({
+          where: { email: validatedCredentials.email, password: validatedCredentials.password },
+        })
 
-      if(!user) {
-        throw new Error("Invalid credentials");
+        if(!user) {
+          throw new Error("Invalid credentials");
+        }
+
+        return user;
       }
-
-      return user;
-    }
-  })],
+    })],
   callbacks: {
     async jwt({token, account}) {
       if(account?.provider === "credentials") {
